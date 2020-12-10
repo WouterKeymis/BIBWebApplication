@@ -2,8 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BIBData.Models;
+using BIBData.Repositories;
+using BIBServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +27,9 @@ namespace BIBWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<BIBDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BIBConnection")));
+            services.AddTransient<LenerService>();
+            services.AddTransient<ILenerRepository, SQLLenerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
